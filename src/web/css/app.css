@@ -1,0 +1,25 @@
+.container {
+    background-color: #c0c9c9;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    max-width: 480px;
+    width: 100%;
+}
+
+.action-btn {
+    background-color: #f1f3f5;
+    color: #212529;
+    border: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.action-btn:hover,
+.action-btn:focus {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+input:hover,
+input:focus {
+   background-color: aqua;
+}
