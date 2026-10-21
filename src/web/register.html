@@ -10,22 +10,37 @@
 
 <div class="container card-container">
     <h3 class="text-center mb-4 text-dark fw-normal">Create Account</h3>
-    <form>
+    <form action="/register" method="POST">
         <div class="mb-3">
-            <input type="text" class="form-control rounded-pill px-3 py-2 border-0 bg-white shadow-sm" placeholder="Username" required>
+            <input type="text" name="firstName" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="First Name" required>
         </div>
         <div class="mb-3">
-            <input type="email" class="form-control rounded-pill px-3 py-2 border-0 bg-white shadow-sm" placeholder="Email" required>
+            <input type="text" name="lastName" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Last Name" required>
         </div>
         <div class="mb-3">
-            <input type="password" class="form-control rounded-pill px-3 py-2 border-0 bg-white shadow-sm" placeholder="Password" required>
+            <input type="email" name="email" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Email" required>
         </div>
         <div class="mb-3">
-            <input type="password" class="form-control rounded-pill px-3 py-2 border-0 bg-white shadow-sm" placeholder="Confirm Password" required>
+            <input type="password" name="password" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Password" required>
         </div>
+        <div class="mb-3">
+            <input type="password" name="confirmPassword" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Confirm Password" required>
+        </div>
+
+        <!-- todo -->
+        <div class="mb-3 row align-items-center">
+            <div class="col-6">
+                <span class="text-muted small px-2">Solve: 7 + 4 = ?</span>
+                <input type="hidden" name="captchaQuestion" value="7 + 4">
+            </div>
+            <div class="col-6">
+                <input type="text" name="captchaAnswer" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Answer" required>
+            </div>
+        </div>
+
         <div class="row justify-content-center mt-4">
-            <div class=" col-6">
-                <button type="submit" class="btn action-btn rounded-pill w-100 py-2">Sign up</button>
+            <div class="col-6">
+                <button type="submit" class="btn action-btn rounded-pill w-100 py-2">Register</button>
             </div>
         </div>
         <div class="text-center mt-3">
