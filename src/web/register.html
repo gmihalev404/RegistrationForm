@@ -10,6 +10,9 @@
 
 <div class="container card-container">
     <h3 class="text-center mb-4 text-dark fw-normal">Create Account</h3>
+
+    {{ERROR_MESSAGE}}
+
     <form action="/register" method="POST">
         <div class="mb-3">
             <input type="text" name="firstName" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="First Name" required>
