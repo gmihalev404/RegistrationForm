@@ -55,7 +55,8 @@ public class RegistrationHandler implements HttpHandler {
                 ));
 
             } else {
-                ViewRenderer.renderFile(exchange, "index.html");
+                exchange.getResponseHeaders().set("Location", "/");
+                exchange.sendResponseHeaders(302, -1);
             }
 
         } else {
