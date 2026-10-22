@@ -7,6 +7,7 @@ public record RegisterRequest(
         String password,
         String confirmPassword,
         String captchaQuestion,
-        String captchaAnswer
+        String captchaAnswer,
+        String captchaToken
 ) {
 }

@@ -1,6 +1,7 @@
 package app.handler;
 
 import app.dto.RegisterRequest;
+import app.service.CaptchaService;
 import app.service.RegistrationService;
 import app.util.FormDataParser;
 import app.util.ViewRenderer;
@@ -20,8 +21,12 @@ public class RegistrationHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            // При отваряне на страницата подаваме празно съобщение за грешка
-            ViewRenderer.renderTemplate(exchange, "register.html", Map.of("ERROR_MESSAGE", ""));
+            CaptchaService.CaptchaChallenge challenge = CaptchaService.generateChallenge();
+            ViewRenderer.renderTemplate(exchange, "register.html", Map.of(
+                    "ERROR_MESSAGE", "",
+                    "CAPTCHA_QUESTION", challenge.question(),
+                    "CAPTCHA_TOKEN", challenge.token()
+            ));
 
         } else if (method.equals("POST")) {
             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
@@ -34,13 +39,21 @@ public class RegistrationHandler implements HttpHandler {
                     parsedData.get("password"),
                     parsedData.get("confirmPassword"),
                     parsedData.get("captchaQuestion"),
-                    parsedData.get("captchaAnswer")
+                    parsedData.get("captchaAnswer"),
+                    parsedData.get("captchaToken")
             );
 
             List<String> errors = registrationService.register(request);
 
             if (!errors.isEmpty()) {
-                ViewRenderer.renderTemplate(exchange, "register.html", Map.of("ERROR_MESSAGE", errors.getFirst()));
+                CaptchaService.CaptchaChallenge challenge = CaptchaService.generateChallenge();
+
+                ViewRenderer.renderTemplate(exchange, "register.html", Map.of(
+                        "ERROR_MESSAGE", errors.getFirst(),
+                        "CAPTCHA_QUESTION", challenge.question(),
+                        "CAPTCHA_TOKEN", challenge.token()
+                ));
+
             } else {
                 ViewRenderer.renderFile(exchange, "index.html");
             }

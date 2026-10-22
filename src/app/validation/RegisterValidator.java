@@ -38,6 +38,15 @@ public class RegisterValidator {
             errors.add("Please provide a CAPTCHA answer.");
         }
 
+        String captchaToken = request.captchaToken();
+        String captchaAnswer = request.captchaAnswer();
+
+        if (captchaAnswer == null || captchaAnswer.trim().isEmpty()) {
+            errors.add("Please provide a CAPTCHA answer.");
+        } else if (!app.service.CaptchaService.verify(captchaToken, captchaAnswer)) {
+            errors.add("Incorrect CAPTCHA answer. Please try again.");
+        }
+
         return errors;
     }
 }
