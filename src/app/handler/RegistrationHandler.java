@@ -11,7 +11,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 
 public class RegistrationHandler implements HttpHandler {
@@ -57,7 +56,7 @@ public class RegistrationHandler implements HttpHandler {
 
             } else {
                 exchange.getResponseHeaders().set("Set-Cookie", "SESSION_ID=" + result.sessionId() + "; Path=/; HttpOnly");
-                exchange.getResponseHeaders().set("Location", "/profile");
+                exchange.getResponseHeaders().set("Location", "/home");
                 exchange.sendResponseHeaders(302, -1);
             }
 

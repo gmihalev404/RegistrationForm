@@ -42,7 +42,7 @@ public class LoginHandler implements HttpHandler {
 
             } else {
                 exchange.getResponseHeaders().set("Set-Cookie", "SESSION_ID=" + result.sessionId() + "; Path=/; HttpOnly");
-                exchange.getResponseHeaders().set("Location", "/profile");
+                exchange.getResponseHeaders().set("Location", "/home");
                 exchange.sendResponseHeaders(302, -1);
             }
 

@@ -1,5 +1,7 @@
 package app.handler;
 
+import app.util.CookiesManger;
+import app.util.SessionManager;
 import app.util.ViewRenderer;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -22,9 +24,15 @@ public class IndexHandler implements HttpHandler {
         }
 
         if (path.equals("/")) {
-//            ViewRenderer.renderFile(exchange, "register.html");
-            // ViewRenderer.renderFile(exchange, "login.html");
-             ViewRenderer.renderFile(exchange, "index.html");
+            String sessionId = CookiesManger.getSessionIdFromCookies(exchange);
+
+            if (SessionManager.isLogged(sessionId)) {
+                exchange.getResponseHeaders().set("Location", "/home");
+                exchange.sendResponseHeaders(302, -1);
+                return;
+            }
+
+            ViewRenderer.renderFile(exchange, "index.html");
             return;
         }
 
