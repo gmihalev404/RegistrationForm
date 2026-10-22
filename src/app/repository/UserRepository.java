@@ -42,6 +42,24 @@ public class UserRepository {
         return Optional.empty();
     }
 
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return Optional.of(mapResultSetToUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public void save(User user) {
         String sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();

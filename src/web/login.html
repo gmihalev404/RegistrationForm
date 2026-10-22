@@ -11,12 +11,15 @@
 
 <div class="container card-container">
     <h3 class="text-center mb-4 text-dark fw-normal">Login</h3>
-    <form>
+
+    {{ERROR_MESSAGE}}
+
+    <form action="/login" method="POST">
         <div class="mb-3">
-            <input type="email" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Email" required>
+            <input type="email" name="email" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Email" required>
         </div>
         <div class="mb-3">
-            <input type="password" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Password" required>
+            <input type="password" name="password" class="form-control rounded-pill px-3 py-2 bg-white" placeholder="Password" required>
         </div>
         <div class="row justify-content-center mt-4">
             <div class=" col-6">

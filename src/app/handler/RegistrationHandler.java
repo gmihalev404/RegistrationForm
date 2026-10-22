@@ -1,6 +1,7 @@
 package app.handler;
 
 import app.dto.RegisterRequest;
+import app.dto.RegistrationResult;
 import app.service.CaptchaService;
 import app.service.RegistrationService;
 import app.util.FormDataParser;
@@ -43,19 +44,20 @@ public class RegistrationHandler implements HttpHandler {
                     parsedData.get("captchaToken")
             );
 
-            List<String> errors = registrationService.register(request);
+            RegistrationResult result = registrationService.register(request);
 
-            if (!errors.isEmpty()) {
+            if (!result.isSuccessful()) {
                 CaptchaService.CaptchaChallenge challenge = CaptchaService.generateChallenge();
 
                 ViewRenderer.renderTemplate(exchange, "register.html", Map.of(
-                        "ERROR_MESSAGE", errors.getFirst(),
+                        "ERROR_MESSAGE", result.errors().getFirst(),
                         "CAPTCHA_QUESTION", challenge.question(),
                         "CAPTCHA_TOKEN", challenge.token()
                 ));
 
             } else {
-                exchange.getResponseHeaders().set("Location", "/");
+                exchange.getResponseHeaders().set("Set-Cookie", "SESSION_ID=" + result.sessionId() + "; Path=/; HttpOnly");
+                exchange.getResponseHeaders().set("Location", "/profile");
                 exchange.sendResponseHeaders(302, -1);
             }
 
