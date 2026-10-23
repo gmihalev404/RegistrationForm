@@ -48,6 +48,14 @@ public class ViewRenderer {
                 } else {
                     content = content.replace("{{" + key + "}}", "");
                 }
+            } else if ("SUCCESS_MESSAGE".equals(key)) {
+                if (value != null && !value.isBlank()) {
+                    String alertHtml = "<div class=\"alert alert-success p-2 mb-3 small rounded-3 text-center\" role=\"alert\">"
+                            + value + "</div>";
+                    content = content.replace("{{" + key + "}}", alertHtml);
+                } else {
+                    content = content.replace("{{" + key + "}}", "");
+                }
             } else {
                 content = content.replace("{{" + key + "}}", value != null ? value : "");
             }

@@ -6,9 +6,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionManager {
-    private static final Map<String, Integer> activeSessions = new ConcurrentHashMap<>();
+    private static final Map<String, Long> activeSessions = new ConcurrentHashMap<>();
 
-    public static String createSession(Integer userId) {
+    public static String createSession(Long userId) {
         String sessionId = UUID.randomUUID().toString();
 
         if (userId != null) {
@@ -17,7 +17,7 @@ public class SessionManager {
         return sessionId;
     }
 
-    public static Optional<Integer> getUserId(String sessionId) {
+    public static Optional<Long> getUserId(String sessionId) {
         if (sessionId == null || sessionId.isBlank()) {
             return Optional.empty();
         }

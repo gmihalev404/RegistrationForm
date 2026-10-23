@@ -10,7 +10,6 @@
     background-color: #f1f3f5;
     color: #212529;
     border: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .action-btn:hover,

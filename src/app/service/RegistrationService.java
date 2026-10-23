@@ -38,7 +38,9 @@ public class RegistrationService {
 
         userRepository.save(newUser);
 
-        String sessionId = SessionManager.createSession(newUser.getId());
+        User user = userRepository.findByEmailAndPassword(newUser.getEmail(), newUser.getPassword()).orElse(null);
+
+        String sessionId = SessionManager.createSession(user.getId());
 
         return new RegistrationResult(List.of(), sessionId);
     }

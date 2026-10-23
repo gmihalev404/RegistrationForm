@@ -17,7 +17,7 @@ public class Main {
         server.createContext("/login", new LoginHandler());
         server.createContext("/register", new RegistrationHandler());
         server.createContext("/home", new HomeHandler());
-//        server.createContext("/profile", new ProfileHandler());
+        server.createContext("/profile", new ProfileHandler());
         server.createContext("/logout", new LogoutHandler());
 
         DatabaseInitializer.initializeDatabase();
