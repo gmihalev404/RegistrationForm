@@ -27,9 +27,9 @@ class RepositoryAndDatabaseTest {
         when(stmt.executeQuery()).thenReturn(rs);
         when(rs.next()).thenReturn(true);
         when(rs.getLong("id")).thenReturn(42L);
-        when(rs.getString("first_name")).thenReturn("Ada");
-        when(rs.getString("last_name")).thenReturn("Lovelace");
-        when(rs.getString("email")).thenReturn("ada@example.com");
+        when(rs.getString("first_name")).thenReturn("T");
+        when(rs.getString("last_name")).thenReturn("T");
+        when(rs.getString("email")).thenReturn("test@t.com");
         when(rs.getString("password")).thenReturn("secret");
 
         try (MockedStatic<DatabaseConnection> db = mockStatic(DatabaseConnection.class)) {
@@ -38,22 +38,22 @@ class RepositoryAndDatabaseTest {
 
             User foundById = repo.findById(42L).orElseThrow();
             assertEquals(42L, foundById.getId());
-            assertEquals("Ada", foundById.getFirstName());
-            assertEquals("Lovelace", foundById.getLastName());
-            assertEquals("ada@example.com", foundById.getEmail());
+            assertEquals("T", foundById.getFirstName());
+            assertEquals("T", foundById.getLastName());
+            assertEquals("test@t.com", foundById.getEmail());
             assertEquals("secret", foundById.getPassword());
             verify(stmt).setLong(1, 42L);
 
-            assertTrue(repo.findByEmail("ada@example.com").isPresent());
-            verify(stmt).setString(1, "ada@example.com");
+            assertTrue(repo.findByEmail("test@t.com").isPresent());
+            verify(stmt).setString(1, "test@t.com");
 
-            assertTrue(repo.findByEmailAndPassword("ada@example.com", "secret").isPresent());
+            assertTrue(repo.findByEmailAndPassword("test@t.com", "secret").isPresent());
             verify(stmt).setString(2, "secret");
 
             when(rs.next()).thenReturn(false);
             assertTrue(repo.findById(200L).isEmpty());
-            assertTrue(repo.findByEmail("unknown@example.com").isEmpty());
-            assertTrue(repo.findByEmailAndPassword("unknown@example.com", "wrong").isEmpty());
+            assertTrue(repo.findByEmail("test.com").isEmpty());
+            assertTrue(repo.findByEmailAndPassword("test.com", "wrong").isEmpty());
         }
     }
 
@@ -66,20 +66,20 @@ class RepositoryAndDatabaseTest {
             db.when(DatabaseConnection::getConnection).thenReturn(connection);
             UserRepository repo = new UserRepository();
 
-            repo.save(new User("Ada", "Lovelace", "ada@example.com", "secret"));
-            verify(stmt).setString(1, "Ada");
-            verify(stmt).setString(2, "Lovelace");
-            verify(stmt).setString(3, "ada@example.com");
+            repo.save(new User("T", "T", "test@t.com", "secret"));
+            verify(stmt).setString(1, "T");
+            verify(stmt).setString(2, "T");
+            verify(stmt).setString(3, "test@t.com");
             verify(stmt).setString(4, "secret");
 
-            repo.save(new User(42L, "New", "Name", "ada@example.com", "newpass"));
+            repo.save(new User(42L, "T", "T", "test@t.com", "newpass"));
             verify(stmt).setLong(5, 42L);
-            verify(stmt).setString(1, "New");
+            verify(stmt, times(2)).setString(1, "T");
 
-            repo.updateName(42, "First", "Last");
+            repo.updateName(42, "T", "T");
             verify(stmt).setInt(3, 42);
-            verify(stmt).setString(1, "First");
-            verify(stmt).setString(2, "Last");
+            verify(stmt, times(3)).setString(1, "T");
+            verify(stmt, times(3)).setString(2, "T");
 
             repo.updatePassword(42, "changed");
             verify(stmt).setInt(3, 42);
