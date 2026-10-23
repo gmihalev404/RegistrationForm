@@ -100,9 +100,10 @@ class HttpHandlersAndRenderingTest {
                 .thenReturn(new RegistrationResult(List.of("Invalid email format."), null))
                 .thenReturn(new RegistrationResult(List.of(), "new-session"));
 
-        String body = "firstName=Ada&lastName=Lovelace&email=ada%40example.com" +
+        String body = "firstName=T&lastName=T&email=ada%40example.com" +
                 "&password=secret1&confirmPassword=secret1&captchaAnswer=4&captchaToken=token";
-        var invalid = TestSupport.request("POST", "/register", null, body);
+        var invalid = TestSupport.request("POST", "/register", null,
+                body.replace("test%40t.com", "test.com"));
         handler.handle(invalid.exchange());
         assertTrue(invalid.content().contains("Invalid email format."));
         assertFalse(invalid.content().contains("{{CAPTCHA_TOKEN}}"));
@@ -136,10 +137,10 @@ class HttpHandlersAndRenderingTest {
             assertEquals("/", notFound.headers().getFirst("Location"));
 
             when(repo.findById(7L))
-                    .thenReturn(Optional.of(new User(7L, "Ada", "L", "ada@example.com", "secret")));
+                    .thenReturn(Optional.of(new User(7L, "T", "T", "test@t.com", "secret")));
             var success = TestSupport.request("GET", "/home", "SESSION_ID=" + session, "");
             handler.handle(success.exchange());
-            assertTrue(success.content().contains("Welcome, Ada"));
+            assertTrue(success.content().contains("Welcome, T"));
 
             var unsupported = TestSupport.request("PUT", "/home", "SESSION_ID=" + session, "");
             handler.handle(unsupported.exchange());
@@ -169,24 +170,24 @@ class HttpHandlersAndRenderingTest {
             assertEquals("/login", missing.headers().getFirst("Location"));
 
             when(repo.findById(7L))
-                    .thenReturn(Optional.of(new User(7L, "Ada", "L", "ada@example.com", "secret")));
+                    .thenReturn(Optional.of(new User(7L, "T", "T", "test@t.com", "secret")));
             var get = TestSupport.request("GET", "/profile", "SESSION_ID=" + session, "");
             handler.handle(get.exchange());
-            assertTrue(get.content().contains("value=\"Ada\""));
+            assertTrue(get.content().contains("value=\"T\""));
 
             when(service.updateProfile(eq(7L), any(ProfileUpdateRequest.class)))
                     .thenReturn(new ProfileUpdateResult(List.of("Invalid name."), false))
                     .thenReturn(new ProfileUpdateResult(List.of(), true));
-            String body = "firstName=Grace&lastName=Hopper&currentPassword=&newPassword=";
+            String body = "firstName=T&lastName=T&currentPassword=&newPassword=";
             var invalid = TestSupport.request("POST", "/profile", "SESSION_ID=" + session, body);
             handler.handle(invalid.exchange());
             assertTrue(invalid.content().contains("Invalid name."));
-            assertTrue(invalid.content().contains("value=\"Grace\""));
+            assertTrue(invalid.content().contains("value=\"T\""));
 
             var valid = TestSupport.request("POST", "/profile", "SESSION_ID=" + session, body);
             handler.handle(valid.exchange());
             assertTrue(valid.content().contains("Profile updated successfully!"));
-            assertTrue(valid.content().contains("value=\"Ada\""));
+            assertTrue(valid.content().contains("value=\"T\""));
 
             var other = TestSupport.request("DELETE", "/profile", "SESSION_ID=" + session, "");
             handler.handle(other.exchange());
@@ -218,8 +219,8 @@ class HttpHandlersAndRenderingTest {
         ViewRenderer.renderTemplate(content.exchange(), "/profile.html", Map.of(
                 "ERROR_MESSAGE", "Bad input",
                 "SUCCESS_MESSAGE", "Saved",
-                "FIRST_NAME", "Ada",
-                "LAST_NAME", "Lovelace"));
+                "FIRST_NAME", "T",
+                "LAST_NAME", "T"));
         assertTrue(content.content().contains("alert-danger"));
         assertTrue(content.content().contains("alert-success"));
         assertTrue(content.content().contains("Bad input"));
