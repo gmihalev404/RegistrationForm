@@ -82,8 +82,9 @@ class RepositoryAndDatabaseTest {
             verify(stmt).setString(2, "Last");
 
             repo.updatePassword(42, "changed");
-            verify(stmt, times(2)).setInt(3, 42);
-            verify(stmt).setString(2, "changed");
+            verify(stmt).setInt(3, 42);
+            verify(stmt).setInt(2, 42);
+            verify(stmt).setString(1, "changed");
             verify(stmt, times(4)).executeUpdate();
         }
     }
