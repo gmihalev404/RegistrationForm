@@ -68,12 +68,12 @@ class HttpHandlersAndRenderingTest {
                 .thenReturn(new LoginResult(List.of(), "a-session"));
 
         var invalid = TestSupport.request("POST", "/login", null,
-                "email=ada%40example.com&password=wrong");
+                "email=test%40t.com&password=wrong");
         handler.handle(invalid.exchange());
         assertTrue(invalid.content().contains("Invalid email or password."));
 
         var valid = TestSupport.request("POST", "/login", null,
-                "email=ada%40example.com&password=secret1");
+                "email=test%40t.com&password=secret1");
         handler.handle(valid.exchange());
         assertEquals("/home", valid.headers().getFirst("Location"));
         assertTrue(valid.headers().getFirst("Set-Cookie").contains("SESSION_ID=a-session"));
@@ -100,7 +100,7 @@ class HttpHandlersAndRenderingTest {
                 .thenReturn(new RegistrationResult(List.of("Invalid email format."), null))
                 .thenReturn(new RegistrationResult(List.of(), "new-session"));
 
-        String body = "firstName=T&lastName=T&email=ada%40example.com" +
+        String body = "firstName=T&lastName=T&email=test%40t.com" +
                 "&password=secret1&confirmPassword=secret1&captchaAnswer=4&captchaToken=token";
         var invalid = TestSupport.request("POST", "/register", null,
                 body.replace("test%40t.com", "test.com"));
