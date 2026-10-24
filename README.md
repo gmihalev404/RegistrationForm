@@ -104,7 +104,7 @@ lib/ – MySQL JDBC драйверът.
 - ValidationAndUtilityTest.java – валидация, CAPTCHA, форми и сесии.
 - TestSupport.java – помощни mock обекти и методи за тестовете.
 
-Снимка на резултата покритието от тестовете: coverage.jpg
+![Unit Test Coverage](coverage.jpg)
 
 ## Стартиране
 
