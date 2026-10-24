@@ -108,7 +108,7 @@ lib/ – MySQL JDBC драйверът.
 
 ## Стартиране
 
-Проектът се отваря в IntelliJ IDEA с JDK 21 или по-нова версия. Директорията src трябва да бъде маркирана като Sources Root, а test – като Test Sources Root.
+Проектът се отваря в IntelliJ IDEA с JDK 21 или по-нова версия.
 
 Настройките за връзка с базата могат да се зададат чрез environment променливите DB_URL, DB_USER и DB_PASSWORD. При липса на такива се използват локалните стойности в DatabaseConnection.java.
 
