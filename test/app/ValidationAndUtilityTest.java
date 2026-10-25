@@ -28,7 +28,6 @@ class ValidationAndUtilityTest {
         assertTrue(RegisterValidator.validate(valid).isEmpty());
         assertFalse(CaptchaService.verify(challenge.token(), TestSupport.captchaAnswer(challenge)));
 
-        // Both user-specified invalid email formats.
         for (String email : List.of("test.com", "test")) {
             var captcha = CaptchaService.generateChallenge();
             RegisterRequest invalid = new RegisterRequest(
